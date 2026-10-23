@@ -1,56 +1,67 @@
 <?php
 
-class produk {
-    
-    //property
+class Produk {
+
+    //Produk
     public string $kode;
     public string $nama;
     public int $harga;
     public int $stok;
 
-    //constant
+    //Constant
     public const PAJAK = 0.11;
-    
-    // 1. Tambahkan nama function (misalnya: getPersentasePajak)
-    public function getPersentasePajak()
-    {
-        // 2. Tambahkan operator * (kali)
+
+    //construct
+
+    public function __construct($kode,$nama,$harga,$stok){
+        $this->kode = $kode;
+        $this->nama = $nama;
+        $this->harga = $harga;
+        $this->stok = $stok;
+
+    }
+
+    //Method static
+    public static function persenPajak(): float {
         return self::PAJAK * 100;
     }
 
-    public function total() {
-        // 3. Perbaiki typo 'return', tambah operator *, dan ubah pajak jadi huruf besar
-        return $this->harga + ($this->harga * self::PAJAK);
+    public static function hitungPajak(int $harga): float {
+        return $harga * self::PAJAK;
+    }
+
+    public static function hitungTotal(int $harga): float {
+        return $harga + self::hitungPajak($harga);
     }
 }
 
 //object
-$produk = new produk();
+$produk = new Produk('P0001','Laptop','1000000',5);
 
-//INPUTAN KE PROPERTY
-$produk->kode = 'P001';
-$produk->nama = 'Laptop';
-$produk->harga = 10000000;
-$produk->stok = 5;
 
-//HITUNG PAJAK
-// 4. Tambahkan operator * (kali) pada perhitungan
-$pajak = produk::PAJAK * 100;
+//Hitung
+$pajak       = Produk::persenPajak();
+$jumlahPajak = Produk::hitungPajak($produk->harga);
+$total       = Produk::hitungTotal($produk->harga);
 
-// 5. Tambahkan operator * (kali) pada perhitungan
-$jumlahpajak = $produk->harga * produk::PAJAK;
+//Output
+echo "Produk: ".$produk->nama;
+echo "<br/>";
 
-//total
-$total = $produk->harga + $jumlahpajak;
-// Catatan: Karena kamu sudah buat fungsi total() di dalam class, 
-// kamu juga bisa langsung pakai: $total = $produk->total();
+echo "harga: ".$produk->harga;
+echo "<br/>";
 
-//hasil
-echo "produk: " . $produk->nama . "<br>";
-echo "kode: " . $produk->kode . "<br>";
-echo "harga: " . $produk->harga . "<br>";
-echo "stok: " . $produk->stok . "<br>";
-echo "pajak: " . $pajak . "%" . "<br>";
+//Output
+echo "Produk: ".$produk->nama;
+echo "<br/>";
 
-echo "total harga setelah pajak: Rp." . $total;
-?>
+echo "harga: ".$produk->harga;
+echo "<br/>";
+
+echo "stok: ".$produk->stok;
+echo "<br/>";
+
+echo "Pajak: " . $pajak . "%<br/>";
+echo "<br/>";
+
+echo "Total harga setelah Pajak: Rp.".$total;
