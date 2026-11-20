@@ -1,62 +1,73 @@
 <?php
 
-namespace App\Models {
+namespace Pbo\Marketplace;
 
-    class Produk
-    {
-        // Properti
-        public string $kode;
-        public string $nama;
-        public int $harga;
-        public int $stok;
+class produk {
+    
+    
+    private string $kode;
+    private string $nama;
+    private int $harga;
+    private int $stok;
 
-        // Constant
-        public const PAJAK = 0.11;
+    
+    public const PAJAK = 0.11;
 
-        // Constructor
-        public function __construct(string $kode, string $nama, int $harga, int $stok)
-        {
-            $this->kode  = $kode;
-            $this->nama  = $nama;
-            $this->harga = $harga;
-            $this->stok  = $stok;
-        }
-
-        // Method static
-        public static function persenPajak(): float
-        {
-            return self::PAJAK * 100;
-        }
-
-        public static function hitungPajak(int $harga): float
-        {
-            return $harga * self::PAJAK;
-        }
-
-        public static function hitungTotal(int $harga): float
-        {
-            return $harga + self::hitungPajak($harga);
-        }
+    public function __construct(){
     }
-}
+    
+    
+    public function setKode($kode){
+        $this->kode = $kode;
+        return $this;
+    }
 
-//Namespace 2: tempat program utama
-namespace App\Main {
+    public function setNama($nama){
+        $this->nama = $nama;
+        return $this;
+    }
 
-    use App\Models\Produk;
+    public function setHarga($harga){
+        if ($harga <= 0){
+            echo "Harga tidak boleh 0";
+            exit();
+        }
+        $this->harga = $harga;
+        return $this;
+    }
 
-    // Object
-    $produk = new Produk('P0001', 'Laptop', 1000000, 5);
+    public function setStok($stok){
+        if ($stok <= 0){
+            echo "Stok tidak tersedia";
+            exit();
+        }
+        $this->stok = $stok;
+        return $this;
+    }
 
-    // Hitung
-    $pajak       = Produk::persenPajak();
-    $jumlahPajak = Produk::hitungPajak($produk->harga);
-    $total       = Produk::hitungTotal($produk->harga);
+    
+    public function getKode(){
+        return $this->kode;
+    }
 
-    // Output
-    echo "Produk: " . $produk->nama . "<br/>";
-    echo "Harga: " . $produk->harga . "<br/>";
-    echo "Stok: " . $produk->stok . "<br/>";
-    echo "Pajak: " . $pajak . "%<br/><br/>";
-    echo "Total harga setelah Pajak: Rp." . $total;
+    public function getNama(){
+        return $this->nama;
+    }
+
+    public function getHarga(){
+        return "Rp.". $this->harga;
+    }
+
+    public function getStok(){
+        return $this->stok ."pcs";
+    }
+
+    public function pajak(){
+        return self::PAJAK * 100;
+    }
+
+    public function total(){
+        return $this->harga + ($this->harga * self::PAJAK);
+    }
+
 }
