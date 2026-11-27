@@ -1,67 +1,73 @@
+
 <?php
 
-class Produk {
+namespace Pbo\marketplace;
 
-    //Produk
-    public string $kode;
-    public string $nama;
-    public int $harga;
-    public int $stok;
+trait produk {
+    
+    //property
+    private string $kode;
+    private string $nama;
+    private int $harga;
+    private int $stok;
 
-    //Constant
+    //constant
     public const PAJAK = 0.11;
 
-    //construct
-
-    public function __construct($kode,$nama,$harga,$stok){
-        $this->kode = $kode;
-        $this->nama = $nama;
-        $this->harga = $harga;
-        $this->stok = $stok;
-
+    public function __construct() {
     }
 
-    //Method static
-    public static function persenPajak(): float {
+    //setter
+    public function setKode(string $kode) {
+        $this->kode = $kode;
+        return $this;
+    }
+
+    public function setNama(string $nama) {
+        $this->nama = $nama;
+        return $this;
+    }
+
+    public function setHarga(int $harga) {
+        if ($harga < 0) {
+            echo "Harga tidak boleh 0";
+            exit();
+        }
+        $this->harga = $harga;
+        return $this;
+    }
+
+    public function setStok(int $stok) {
+        if ($stok < 0) {
+            echo "Stok tidak boleh 0";
+            exit();
+        }
+        $this->stok = $stok;
+        return $this;
+    }
+
+    //getter
+    public function getKode() {
+        return $this->kode;
+    }
+
+    public function getNama() {
+        return $this->nama;
+    }
+
+    public function getHarga() {
+        return "Rp." . $this->harga;
+    }
+
+    public function getStok() {
+        return $this->stok . " pcs";
+    }
+ 
+    public function pajak() {
         return self::PAJAK * 100;
     }
 
-    public static function hitungPajak(int $harga): float {
-        return $harga * self::PAJAK;
-    }
-
-    public static function hitungTotal(int $harga): float {
-        return $harga + self::hitungPajak($harga);
+    public function total() {
+        return $this->harga + ($this->harga * self::PAJAK);
     }
 }
-
-//object
-$produk = new Produk('P0001','Laptop','1000000',5);
-
-
-//Hitung
-$pajak       = Produk::persenPajak();
-$jumlahPajak = Produk::hitungPajak($produk->harga);
-$total       = Produk::hitungTotal($produk->harga);
-
-//Output
-echo "Produk: ".$produk->nama;
-echo "<br/>";
-
-echo "harga: ".$produk->harga;
-echo "<br/>";
-
-//Output
-echo "Produk: ".$produk->nama;
-echo "<br/>";
-
-echo "harga: ".$produk->harga;
-echo "<br/>";
-
-echo "stok: ".$produk->stok;
-echo "<br/>";
-
-echo "Pajak: " . $pajak . "%<br/>";
-echo "<br/>";
-
-echo "Total harga setelah Pajak: Rp.".$total;
